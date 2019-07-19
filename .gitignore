@@ -1,0 +1,4 @@
+/db
+/app/public/wp-config.php
+/app/public/wp-content
+!/app/public/wp-content/themes
