@@ -1,4 +1,7 @@
-/db
+/db/dump/*
+/db/data/*
+!/db/dump/.gitkeep
+!/db/data/.gitkeep
 /app/public/wp-config.php
 /app/public/wp-content
 !/app/public/wp-content/themes
