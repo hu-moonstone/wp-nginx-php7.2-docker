@@ -15,19 +15,50 @@ services:
   app:
     build: ./app
     depends_on:
-      - db
+      - mariadb
     volumes:
       - ./app/public/wp-config.php:/var/www/html/wp-config.php
       - ./app/upload.ini:/usr/local/etc/php/conf.d/upload.ini
       - ./app/public/wp-content/themes/corydoras:/var/www/html/wp-content/themes/corydoras
       # - ./app/public/wp-content/uploads/*:/var/www/html/wp-content/uploads/*
       # - ./app/public/wp-content/uploads:/var/www/html/wp-content/plugins
+  api:
+    build: ./strapi
+    environment:
+      - APP_NAME=strapi-app
+      - DATABASE_CLIENT=mongo
+      - DATABASE_HOST=mongodb
+      - DATABASE_PORT=27017
+      - DATABASE_NAME=strapi
+      - DATABASE_USERNAME=
+      - DATABASE_PASSWORD=
+      - DATABASE_SSL=false
+      - DATABASE_AUTHENTICATION_DATABASE=strapi
+      - HOST=localhost
+    ports:
+      - 1337:1337
+    # volumes:
+    #   - ./strapi-app:/usr/src/api/strapi-app
+    #   - /usr/src/api/strapi-app/node_modules
+    depends_on:
+      - mongodb
+    restart: always
 
-  db:
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=strapi
+    ports:
+      - 27117:27017
+    volumes:
+      - ./db/mongo:/data/db
+    restart: always
+
+  mariadb:
     image: mariadb:latest
     env_file: .env
     ports:
-      - "3306:3306"
+      - "3316:3306"
     volumes:
       - ./db/data:/var/lib/mysql
       - ./db/dump/mysql.dump.sql:/docker-entrypoint-initdb.d/install_wordpress.sql

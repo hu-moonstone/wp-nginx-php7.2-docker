@@ -1,7 +1,12 @@
 /db/dump/*
 /db/data/*
+/db/mongo/*
 !/db/dump/.gitkeep
 !/db/data/.gitkeep
+!/db/mongo/.gitkeep
+
 /app/public/wp-config.php
 /app/public/wp-content
 !/app/public/wp-content/themes
+
+/strapi-app
