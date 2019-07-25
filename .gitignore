@@ -5,8 +5,8 @@
 !/db/data/.gitkeep
 !/db/mongo/.gitkeep
 
-/app/public/wp-config.php
-/app/public/wp-content
-!/app/public/wp-content/themes
+/wordpress/public/wp-config.php
+/wordpress/public/wp-content
+!/wordpress/public/wp-content/themes
 
 /strapi-app

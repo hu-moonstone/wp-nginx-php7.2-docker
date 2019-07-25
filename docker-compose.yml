@@ -3,26 +3,37 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "8000:80"
-      - "8001:443"
+      - "8080:80"
+      - "8443:443"
     depends_on:
-      - app
+      - wordpress
     volumes_from:
-      - app
+      - wordpress
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+  gatsby:
+    build: ./gatsby
+    ports:
+      - "8090:8000"
+    volumes:
+      - ./gatsby/blazing-fast/src:/var/www/html/src
+      - ./gatsby/blazing-fast/gatsby-node.js:/var/www/html/gatsby-node.js
+      - ./gatsby/blazing-fast/gatsby-config.js:/var/www/html/gatsby-config.js
+    environment:
+      - NODE_ENV=development
 
-  app:
-    build: ./app
+  wordpress:
+    build: ./wordpress
     depends_on:
       - mariadb
     volumes:
-      - ./app/public/wp-config.php:/var/www/html/wp-config.php
-      - ./app/upload.ini:/usr/local/etc/php/conf.d/upload.ini
-      - ./app/public/wp-content/themes/corydoras:/var/www/html/wp-content/themes/corydoras
+      - ./wordpress/public/wp-config.php:/var/www/html/wp-config.php
+      - ./wordpress/upload.ini:/usr/local/etc/php/conf.d/upload.ini
+      - ./wordpress/public/wp-content/themes/corydoras:/var/www/html/wp-content/themes/corydoras
       # - ./app/public/wp-content/uploads/*:/var/www/html/wp-content/uploads/*
       # - ./app/public/wp-content/uploads:/var/www/html/wp-content/plugins
-  api:
+
+  strapi:
     build: ./strapi
     environment:
       - APP_NAME=strapi-app
@@ -38,8 +49,8 @@ services:
     ports:
       - 1337:1337
     # volumes:
-    #   - ./strapi-app:/usr/src/api/strapi-app
-    #   - /usr/src/api/strapi-app/node_modules
+    #    - ./strapi-app:/usr/src/api/strapi-app
+    #    - /usr/src/api/strapi-app/node_modules
     depends_on:
       - mongodb
     restart: always
