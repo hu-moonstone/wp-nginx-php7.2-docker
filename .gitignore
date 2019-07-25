@@ -1,3 +1,4 @@
+!.gitkeep
 /db/dump/*
 /db/data/*
 /db/mongo/*
